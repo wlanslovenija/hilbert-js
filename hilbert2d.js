@@ -1,5 +1,4 @@
-
-var Hilbert2d = exports.Hilbert2d = function(options, axisOrderOpt) {
+var Hilbert2d = window.Hilbert2d = function(options, axisOrderOpt) {
   options = options || {};
   if (typeof options == 'number') {
     this.size = options;
@@ -33,7 +32,7 @@ var Hilbert2d = exports.Hilbert2d = function(options, axisOrderOpt) {
     };
   }
 
-  this.maybeRotate = function(point, iter) {
+  function maybeRotate(point, iter) {
     if (this.size) {
       if (this.anchorAxisOrder == 'xy') {
         if (iter ^ this.log2parity) {
@@ -92,7 +91,7 @@ var Hilbert2d = exports.Hilbert2d = function(options, axisOrderOpt) {
       d = Math.floor(d / 4);
       iter = (iter + 1) % 2;
     }
-    return this.maybeRotate(curPos, iter);
+    return maybeRotate(curPos, iter);
   };
 
   var horseshoe2d = [0, 1, 3, 2];
@@ -108,7 +107,7 @@ var Hilbert2d = exports.Hilbert2d = function(options, axisOrderOpt) {
     for (; 2 * s <= max; s *= 2) {
       level = (level + 1) % 2;
     }
-    curPos = this.maybeRotate(curPos, level);
+    curPos = maybeRotate(curPos, level);
 
     var d = 0;
     while (s > 0) {
@@ -134,3 +133,9 @@ var Hilbert2d = exports.Hilbert2d = function(options, axisOrderOpt) {
     return d;
   };
 };
+
+var h2 = new Hilbert2d();
+window.d2xy = h2.d2xy;
+window.xy = h2.xy;
+window.xy2d = h2.xy2d;
+window.d2 = h2.d;
